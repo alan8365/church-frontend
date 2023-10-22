@@ -215,6 +215,7 @@ export default {
               vs.donation_at = "";
               vs.donation_amount = "";
               vs.comment = "";
+              vs.receipt = true
             }
           });
         }).catch(error => {

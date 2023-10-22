@@ -8,11 +8,13 @@ Vue.use(Vuex);
 const CryptoJS = require("crypto-js");
 const token = localStorage.getItem("token");
 
-const api = "http://163.17.135.152:7465/api";
+// const api = "http://163.17.135.152:7465/api";
+const api = process.env.API_URL;
 
 // 有Token
 const userTokenAxios = axios.create({
-  baseURL: "http://163.17.135.152:7465/api",
+  // baseURL: "http://163.17.135.152:7465/api",
+  baseURL: process.env.API_URL,
   headers: {
     "Cache-Control": "no-cache",
     "Content-Type": "application/json",
@@ -22,7 +24,8 @@ const userTokenAxios = axios.create({
 
 // 有Token且FormData
 const userFormDataAxios = axios.create({
-  baseURL: "http://163.17.135.152:7465/api",
+  // baseURL: "http://163.17.135.152:7465/api",
+  baseURL: process.env.API_URL,
   headers: {
     // "Cache-Control": "no-cache",
     'Content-Type' : 'multipart/form-data',

@@ -215,7 +215,7 @@ export default {
               vs.donation_amount = "";
               vs.donation_at = "";
               vs.comment = "";
-              vs.receipt = "";
+              vs.receipt = true;
               vs.name = "";
               vs.remark = "";
             }

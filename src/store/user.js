@@ -25,17 +25,20 @@ const token = localStorage.getItem("token");
 //     Authorization: `Bearer ${token}`
 //   },
 // });
-const api = "http://163.17.135.152:7465/api";
+// const api = "http://163.17.135.152:7465/api";
+const api = process.env.API_URL;
 
 const userAxios = axios.create({
-  baseURL: "http://163.17.135.152:7465/api",
+  // baseURL: "http://163.17.135.152:7465/api",
+  baseURL: process.env.API_URL,
     headers: {
     "Cache-Control": "no-cache",
   },
 });
 
 const userTokenAxios = axios.create({
-  baseURL: "http://163.17.135.152:7465/api",
+  // baseURL: "http://163.17.135.152:7465/api",
+  baseURL: process.env.API_URL,
   headers: {
     "Cache-Control": "no-cache",
     "Content-Type": "application/json",
