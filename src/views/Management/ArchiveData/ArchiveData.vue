@@ -200,7 +200,7 @@ export default {
             dataIndex: 'move_out_date',
             key: 'move_out_date',
             width: 120,
-            sorter: (a, b) => parseInt(a.move_out_date.replace("-","")) - parseInt(b.move_out_date.replace("-","")),
+            sorter: (a, b) => parseInt(a.move_out_date.replace(/-/g, '')) - parseInt(b.move_out_date.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'move_out_date' && sortedInfo.order,
           },
           {
@@ -283,7 +283,7 @@ export default {
             dataIndex: 'move_out_date',
             key: 'move_out_date',
             width: 120,
-            sorter: (a, b) => parseInt(a.move_out_date.replace("-","")) - parseInt(b.move_out_date.replace("-","")),
+            sorter: (a, b) => parseInt(a.move_out_date.replace(/-/g, '')) - parseInt(b.move_out_date.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'move_out_date' && sortedInfo.order,
           },
           {
@@ -357,10 +357,14 @@ export default {
       const numA = this.extractNumber(a.home_number);
       const numB = this.extractNumber(b.home_number);
 
-      if (typeof a.homeNumber === 'string' && typeof b.homeNumber === 'string') {
+      if (typeof a.home_number === 'string' && typeof b.home_number === 'string') {
         // 如果沒有數字就比對字串長度
         if (numA === null && numB === null) {
-          return a.homeNumber.length - b.homeNumber.length;
+          if (a.home_number.length === b.home_number.length) {
+            return a.home_number.localeCompare(b.home_number);
+          } else {
+            return a.home_number.length - b.home_number.length;
+          }
         }
       }
 

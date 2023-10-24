@@ -130,7 +130,7 @@ export default {
           dataIndex: 'start_at',
           key: 'start_at',
           width: 120,
-          sorter: (a, b) => parseInt(a.start_at.replace("-","")) - parseInt(b.start_at.replace("-","")),
+          sorter: (a, b) => parseInt(a.start_at.replace(/-/g, '')) - parseInt(b.start_at.replace(/-/g, '')),
           sortOrder: sortedInfo.columnKey === 'start_at' && sortedInfo.order,
         },
         {

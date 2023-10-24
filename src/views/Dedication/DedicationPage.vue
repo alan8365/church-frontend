@@ -44,7 +44,7 @@
           <div class="box_content">
             <button @click="showAllDonations" class="box_link">
               <img src="../../assets/AllDonations.jpg"/>
-                公署年統計
+                綜合奉獻年統計
             </button>
             <button @click="showReceipt" class="box_link">
               <img src="../../assets/ReceiptStatistics.jpg"/>
@@ -120,7 +120,7 @@
         </a-modal>
 
         <!-- 送公署計資料查詢彈窗 -->
-        <a-modal v-model="allDonationsModal" title="送公署統計資料" ok-text="確認" cancel-text="取消" @ok="goAllDonationStatistics" @cancel="cancelSelect">
+        <a-modal v-model="allDonationsModal" title="綜合奉獻年統計資料" ok-text="確認" cancel-text="取消" @ok="goAllDonationStatistics" @cancel="cancelSelect">
           <div class="bar">
             <a>年份：</a>
             <!-- 年份參考資料：http://www.5imoban.net/jiaocheng/bootstrap/202211155137.html -->
@@ -212,6 +212,9 @@ export default {
       specialYearOpen: false,
       selectedSpecialYear: "",
       specialYearModal: false,
+      // 當年、當月
+      nowYear: "",
+      nowMonth: "",
     };
   },
   watch: {
@@ -248,6 +251,11 @@ export default {
   components: {
     Loading
   },
+  computed: {
+    ...mapGetters({
+        thisDateTime: 'thisDateTime',
+    }),
+  },
   mounted() {
     // 判斷有無token 否則要打回登入頁面
     let token = localStorage.getItem("token")
@@ -255,6 +263,11 @@ export default {
       this.$router.push("/");
     }
     
+    // 取得目前時間
+    this.getDateTime()
+    this.nowMonth = this.thisDateTime.split("-")[1]
+    this.nowYear = this.thisDateTime.split("-")[0]
+
     // 紀錄當前頁面
     localStorage.setItem("pageName", this.$route.name.split("/")[0]);
   },
@@ -265,9 +278,13 @@ export default {
       // 撈對應年份有的活動
       getYearSpecialDonationsEvents: 'getYearSpecialDonationsEvents'
     }),
+    ...mapActions({
+      // 目前時間
+      getDateTime: 'getDateTime',
+    }),
     // 特殊統計資料彈窗
     goSpecialStatistics() {
-      if (this.selectedSpecial == "" && this.selectedEventYear == "") {
+      if (this.selectedSpecial == "" || this.selectedEventYear == "") {
         Modal.warning({
           title: '系統提示',
           content: '請檢查資料',
@@ -454,12 +471,16 @@ export default {
     },
     // 開特殊年統計
     showSpecialYearModal() {
-      this.selectedSpecialYear = ""
+      // this.selectedSpecialYear = ""
+      // 預設年
+      this.selectedSpecialYear = this.nowYear
       this.specialYearModal = true
     },
     // 開特殊統計
     showSpecialModal() {
-      this.selectedEventYear = ""
+      // this.selectedEventYear = ""
+      // 預設年
+      this.selectedEventYear = this.nowYear
       this.selectedSpecial = ""
       // 原先直接撈所有奉獻資料
       // this.getAllSpecialDonationsEvents().then(res => {
@@ -486,21 +507,29 @@ export default {
     // 開月統計
     showMonModal() {
       this.selectedMonDate = ""
+      // 預設年、月
+      this.selectedMonDate = this.nowYear+ "-"+ this.nowMonth
       this.monModal = true
     },
     // 開年統計資料彈窗
     showYearModal() {
-      this.selectedYearDate = ""
+      // this.selectedYearDate = ""
+      // 預設年
+      this.selectedYearDate = this.nowYear
       this.yearModal = true;
     },
     // 開送公署年統計彈窗
     showAllDonations() {
-      this.selectedAllDonations = ""
+      // this.selectedAllDonations = ""
+      // 預設年
+      this.selectedAllDonations = this.nowYear
       this.allDonationsModal = true
     },
     // 開送捐款收據名冊彈窗
     showReceipt() {
-      this.selectedReceipt = ""
+      // this.selectedReceipt = ""
+      // 預設年
+      this.selectedReceipt = this.nowYear
       this.receiptModal = true
     },
     // 關所有統計資料彈窗

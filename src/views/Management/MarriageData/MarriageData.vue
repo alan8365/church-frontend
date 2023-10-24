@@ -120,7 +120,7 @@ export default {
             dataIndex: 'marriage_at',
             key: 'marriage_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.marriage_at.replace("-","")) - parseInt(b.marriage_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.marriage_at.replace(/-/g, '')) - parseInt(b.marriage_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'marriage_at' && sortedInfo.order,
           },
           {
@@ -176,7 +176,7 @@ export default {
             dataIndex: 'marriage_at',
             key: 'marriage_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.marriage_at.replace("-","")) - parseInt(b.marriage_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.marriage_at.replace(/-/g, '')) - parseInt(b.marriage_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'marriage_at' && sortedInfo.order,
           },
           {

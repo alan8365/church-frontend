@@ -137,7 +137,7 @@ export default {
           //   title: '家號',
           //   dataIndex: 'home_number',
           //   key: 'home_number',
-          //   sorter: (a, b) => parseInt(a.home_number.replace("-","")) - parseInt(b.home_number.replace("-","")),
+          //   sorter: (a, b) => parseInt(a.home_number.replace(/-/g, '')) - parseInt(b.home_number.replace(/-/g, '')),
           //   sortOrder: sortedInfo.columnKey === 'home_number' && sortedInfo.order,
           // },
           // {
@@ -185,7 +185,7 @@ export default {
             dataIndex: 'confirmed_at',
             key: 'confirmed_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.confirmed_at.replace("-","")) - parseInt(b.confirmed_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.confirmed_at.replace(/-/g, '')) - parseInt(b.confirmed_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'confirmed_at' && sortedInfo.order,
           },
           {
@@ -231,7 +231,7 @@ export default {
           //   title: '家號',
           //   dataIndex: 'home_number',
           //   key: 'home_number',
-          //   sorter: (a, b) => parseInt(a.home_number.replace("-","")) - parseInt(b.home_number.replace("-","")),
+          //   sorter: (a, b) => parseInt(a.home_number.replace(/-/g, '')) - parseInt(b.home_number.replace(/-/g, '')),
           //   sortOrder: sortedInfo.columnKey === 'home_number' && sortedInfo.order,
           // },
           // {
@@ -279,7 +279,7 @@ export default {
             dataIndex: 'confirmed_at',
             key: 'confirmed_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.confirmed_at.replace("-","")) - parseInt(b.confirmed_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.confirmed_at.replace(/-/g, '')) - parseInt(b.confirmed_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'confirmed_at' && sortedInfo.order,
           },
           {

@@ -138,7 +138,7 @@ export default {
           //   title: '家號',
           //   dataIndex: 'keyName',
           //   key: 'keyName',
-          //   sorter: (a, b) => parseInt(a.keyName.replace("-","")) - parseInt(b.keyName.replace("-","")),
+          //   sorter: (a, b) => parseInt(a.keyName.replace(/-/g, '')) - parseInt(b.keyName.replace(/-/g, '')),
           //   sortOrder: sortedInfo.columnKey === 'keyName' && sortedInfo.order,
           // },
           // {
@@ -187,7 +187,7 @@ export default {
             dataIndex: 'eucharist_at',
             key: 'eucharist_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.eucharist_at.replace("-","")) - parseInt(b.eucharist_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.eucharist_at.replace(/-/g, '')) - parseInt(b.eucharist_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'eucharist_at' && sortedInfo.order,
           },
           {
@@ -233,7 +233,7 @@ export default {
           //   title: '家號',
           //   dataIndex: 'keyName',
           //   key: 'keyName',
-          //   sorter: (a, b) => parseInt(a.keyName.replace("-","")) - parseInt(b.keyName.replace("-","")),
+          //   sorter: (a, b) => parseInt(a.keyName.replace(/-/g, '')) - parseInt(b.keyName.replace(/-/g, '')),
           //   sortOrder: sortedInfo.columnKey === 'keyName' && sortedInfo.order,
           // },
           // {
@@ -282,7 +282,7 @@ export default {
             dataIndex: 'eucharist_at',
             key: 'eucharist_at',
             width: 120,
-            sorter: (a, b) => parseInt(a.eucharist_at.replace("-","")) - parseInt(b.eucharist_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.eucharist_at.replace(/-/g, '')) - parseInt(b.eucharist_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'eucharist_at' && sortedInfo.order,
           },
           {
