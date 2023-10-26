@@ -132,7 +132,7 @@ export default {
           dataIndex: 'donation_at',
           key: 'donation_at',
           width: 100,
-          sorter: (a, b) => a.donation_at - b.donation_at,
+          sorter: (a, b) => parseInt(a.donation_at.replace(/\//g, '')) - parseInt(b.donation_at.replace(/\//g, '')),
           sortOrder: sortedInfo.columnKey === 'donation_at' && sortedInfo.order,
         },
         {
@@ -148,8 +148,12 @@ export default {
           dataIndex: 'donation_amount',
           key: 'donation_amount',
           width: 100,
-          sorter: (a, b) => a.donation_amount - b.donation_amount,
-          sortOrder: sortedInfo.columnKey === 'January' && sortedInfo.order,
+          sorter: (a, b) => {
+              const valueA = (typeof a.donation_amount === 'string') ? parseInt(a.donation_amount.replace(/,/g, '')) : a.donation_amount;
+              const valueB = (typeof b.donation_amount === 'string') ? parseInt(b.donation_amount.replace(/,/g, '')) : b.donation_amount;
+              return valueA - valueB;
+            },
+          sortOrder: sortedInfo.columnKey === 'donation_amount' && sortedInfo.order,
         },
         {
           title: '備註',
@@ -189,10 +193,14 @@ export default {
       const numA = this.extractNumber(a.home_number);
       const numB = this.extractNumber(b.home_number);
 
-      if (typeof a.homeNumber === 'string' && typeof b.homeNumber === 'string') {
+      if (typeof a.home_number === 'string' && typeof b.home_number === 'string') {
         // 如果沒有數字就比對字串長度
         if (numA === null && numB === null) {
-          return a.homeNumber.length - b.homeNumber.length;
+          if (a.home_number.length === b.home_number.length) {
+            return a.home_number.localeCompare(b.home_number);
+          } else {
+            return a.home_number.length - b.home_number.length;
+          }
         }
       }
 
@@ -244,7 +252,7 @@ export default {
             home_number: this.result[i].home_number,
             donation_at: this.result[i].donation_at,
             name: this.result[i].name,
-            donation_amount: this.result[i].donation_amount !== null ?  this.result[i].donation_amount : 0,
+            donation_amount: this.result[i].donation_amount !== null ?  this.result[i].donation_amount.toLocaleString() : 0,
             comment: this.result[i].comment
           })
         }
@@ -252,11 +260,11 @@ export default {
         let totalPrice = 0
         for (let i = 0; i < this.data.length; i++) {
           if (this.data[i].donation_amount !== null) {
-           totalPrice = totalPrice + this.data[i].donation_amount
+           totalPrice = totalPrice + parseInt(this.data[i].donation_amount.replace(/,/g, ''))
           }
         }
         // this.totalPrice = this.result[this.result.length - 1].donation_amount
-        this.totalPrice = totalPrice
+        this.totalPrice = totalPrice.toLocaleString()
         
         // console.log("274",this.data, this.result);
          

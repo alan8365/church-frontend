@@ -29,11 +29,14 @@
             </button>
           </div>
         </div>
-        <div class="box_content" id="computerUI">
+        <!-- <div class="box_content" id="computerUI">
           <a-table :columns="columns" :data-source="data" @change="handleChange" :pagination="pagination" :scroll="{ y: scroll_Y }"/>
         </div>
         <div class="box_content" id="phoneUI">
           <a-table :columns="columns" :data-source="data" @change="handleChange" :pagination="pagination"/>
+        </div> -->
+        <div class="box_content">
+          <a-table :columns="columns" :data-source="data" @change="handleChange" :pagination="pagination" />
         </div>
        </a-col>
     </a-row>
@@ -98,7 +101,7 @@ export default {
       anonymousPrice: 0,
       famousPrice: 0,
       result: [],
-      columns: []
+      columns: [],
     };
   },
   components: {
@@ -170,24 +173,42 @@ export default {
     },
     // 撈所有資料
     allRegularDonations() {
-      this.loading = true
+      if (this.data.length == 0) {
+        this.loading = true
+      }
       this.getAllSpecialYearDonations({
         date: localStorage.getItem('date')
       }).then(res => {
         this.loading = false
         // console.log("195",res.data);
         let data = res.data
-        
+
         // 整理表格表頭
+        // const headerRow = data[0];
+        // this.columns = headerRow.map((header) => ({
+        //   title: header,
+        //   dataIndex: header,
+        //   key: header,
+        //   width: 100,
+        //   sorter: (a, b) => this.customSort(a[header], b[header]), // 自定義排序函數
+        // }));
+        
         const headerRow = data[0];
-        this.columns = headerRow.map((header) => ({
-          title: header,
-          dataIndex: header,
-          key: header,
-          width: 100,
-          sorter: (a, b) => this.customSort(a[header], b[header]), // 自定義排序函數
-          sortOrder: 'ascend', // 初始排序順序，可以是 'ascend' 或 'descend'
-        }));
+        this.columns = headerRow.map((header) => {
+          let order = null;
+          if (this.sortedInfo && this.sortedInfo.columnKey === header) {
+            order = this.sortedInfo.order;
+          }
+
+          return {
+            title: header,
+            dataIndex: header,
+            key: header,
+            width: 150,
+            sorter: (a, b) => this.customSort(a[header], b[header]),
+            sortOrder: order,
+          };
+        });
 
         // console.log("199", this.columns);
 
@@ -199,7 +220,7 @@ export default {
             const header = headerRow[j];
             // 將非姓名和家號的值為 null 的欄位補上 0
             if (header !== "家號" && header !== "姓名") {
-              rowObject[header] = rowData[j] === null ? 0 : rowData[j]; 
+              rowObject[header] = rowData[j] === null ? 0 : rowData[j].toLocaleString(); 
             } else {
               rowObject[header] = rowData[j];
             }
@@ -209,10 +230,12 @@ export default {
 
         // console.log("227", data);
         // 第一個是表頭，所以直接從1開始，且捨去最後三筆總額的
-        for (let i = 1; i < data.length - 3; i++) {
-          const rowData = data[i];
-          // console.log("209",rowData);
-          this.data.push(rowData)
+        if (this.data.length == 0) {
+          for (let i = 1; i < data.length - 3; i++) {
+            const rowData = data[i];
+            // console.log("209",rowData);
+            this.data.push(rowData)
+          }
         }
 
         // this.anonymousPrice = this.result[this.result.length - 2].total
@@ -223,19 +246,43 @@ export default {
          
         
       }).catch(error => {
-          this.loading = false
-          Modal.error({
-            title: '系統提示',
-            content: '請重新查詢資料',
-            okText: '確認',
-          });
-        })
+        this.loading = false
+        Modal.error({
+          title: '系統提示',
+          content: '請重新查詢資料',
+          okText: '確認',
+        });
+      })
     },
     customSort(a, b) {
-      // 自定義排序邏輯，根據字符串長度進行比較
-      const lengthA = a ? a.length : 0;
-      const lengthB = b ? b.length : 0;
-      return lengthA - lengthB;
+      const removeCommas = (str) => {
+        if (typeof str !== 'string') return str;
+        return str.replace(/,/g, '');
+      };
+
+      const aValue = a !== null ? removeCommas(a.toString()) : "";
+      const bValue = b !== null ? removeCommas(b.toString()) : "";
+
+      // 如果值都是純數字，則比較數字大小
+      if (!isNaN(aValue) && !isNaN(bValue)) {
+        return Number(aValue) - Number(bValue);
+      }
+
+      // 提取數字部分進行比較
+      const aNumeric = Number(aValue.match(/\d+/) ? aValue.match(/\d+/)[0] : 0);
+      const bNumeric = Number(bValue.match(/\d+/) ? bValue.match(/\d+/)[0] : 0);
+
+      if (aNumeric !== 0 || bNumeric !== 0) {
+        return aNumeric - bNumeric;
+      }
+
+      // 若數字相同或無數字，則按照字串長度進行比較
+      if (aValue.length !== bValue.length) {
+        return aValue.length - bValue.length;
+      }
+
+      // 如果長度相同，則按照 A-Z 排序
+      return aValue.localeCompare(bValue);
     },
     // 匯出
     exportProfileData() {
@@ -275,15 +322,14 @@ export default {
     },
     // 表格相關的
     handleChange(pagination, filters, sorter) {
-      // console.log('Various parameters', pagination, filters, sorter);
-      this.filteredInfo = filters;
       this.sortedInfo = sorter;
-
       if (!sorter.order) {
-        sorter.order = 'ascend';
+        sorter.order = 'ascend'; // 如果您不希望有第三個狀態，您可以在此處進行調整
       }
-      this.lastSortOrder = sorter.order;
-    },
+
+      // 這裡可能需要重新調用 allRegularDonations (或其他相關方法) 以更新排序狀態
+      this.allRegularDonations();
+    }
   },
 };
 </script>

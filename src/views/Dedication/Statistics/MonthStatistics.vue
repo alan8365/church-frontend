@@ -45,30 +45,30 @@
     </a-row>
 
     <!-- 查詢金額合計彈窗 -->
-    <div class="modal_box" v-if="this.result.length !== 0">
+    <div class="modal_box" v-if="Object.keys(this.result).length !== 0">
       <a-modal class="modal" v-model="searchPriceModal" title="各項合計金額查詢" ok-text="確認" cancel-text="取消" @ok="checkPrice" :cancelButtonProps="cancelButtonProps">
         <div class="bar" style="border-bottom: 1px solid #dddddd; margin-top: -5px; padding-top: 0px">
           <a>項目</a>
           <a>合計金額</a>
         </div>
         <div class="bar">
-          <a>{{ this.result[0].date1 }}</a>
+          <a>{{ this.result.date1 }}</a>
           <a style="text-align: right;"><a style="color: red">{{ date1_price }}</a> 元</a>
         </div>
         <div class="bar">
-          <a>{{ this.result[0].date2 }}</a>
+          <a>{{ this.result.date2 }}</a>
           <a style="text-align: right;"><a style="color: red">{{ date2_price }}</a> 元</a>
         </div>
         <div class="bar">
-          <a>{{ this.result[0].date3 }}</a>
+          <a>{{ this.result.date3 }}</a>
           <a style="text-align: right;"><a style="color: red">{{ date3_price }}</a> 元</a>
         </div>
         <div class="bar">
-          <a>{{ this.result[0].date4 }}</a>
+          <a>{{ this.result.date4 }}</a>
           <a style="text-align: right;"><a style="color: red">{{ date4_price }}</a> 元</a>
         </div>
-        <div class="bar" v-if="this.result[0].date5 !== undefined">
-          <a>{{ this.result[0].date5 }}</a>
+        <div class="bar" v-if="this.result.date5 !== undefined">
+          <a>{{ this.result.date5 }}</a>
           <a style="text-align: right;"><a style="color: red">{{ date5_price }}</a> 元</a>
         </div>
         <div class="bar" style="border-top: 1px solid #dddddd;">
@@ -158,6 +158,8 @@ export default {
       date3_price: 0,
       date4_price: 0,
       date5_price: 0,
+      result: [],
+      columns: [],
     };
   },
   components: {
@@ -168,72 +170,72 @@ export default {
   },
   computed: {
     // 欄位
-    columns() {
-      let { sortedInfo, filteredInfo } = this;
-      sortedInfo = sortedInfo || {};
-      filteredInfo = filteredInfo || {};
+    // columns() {
+    //   let { sortedInfo, filteredInfo } = this;
+    //   sortedInfo = sortedInfo || {};
+    //   filteredInfo = filteredInfo || {};
 
-      // console.log("110", this.result);
-      const columns = [
-        {
-          title: '家號',
-          dataIndex: 'home_number',
-          key: 'home_number',
-          width: 100,
-          sorter: (a, b) => this.home_numberSort(a, b),
-          sortOrder: sortedInfo.columnKey === 'home_number' && sortedInfo.order,
-        },
-        {
-          title: '姓名',
-          dataIndex: 'name',
-          key: 'name',
-          width: 120,
-          sorter: (a, b) => a.name.length - b.name.length,
-          sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-        },
-        {
-          title: '1/1',
-          dataIndex: 'date1',
-          key: 'date1',
-          width: 100,
-          sorter: (a, b) => a.date1 - b.date1,
-          sortOrder: sortedInfo.columnKey === 'date1' && sortedInfo.order,
-        },
-        {
-          title: '1/8',
-          dataIndex: 'date2',
-          key: 'date2',
-          width: 100,
-          sorter: (a, b) => a.date2 - b.date2,
-          sortOrder: sortedInfo.columnKey === 'date2' && sortedInfo.order,
-        },
-        {
-          title: '1/22',
-          dataIndex: 'date3',
-          key: 'date3',
-          width: 100,
-          sorter: (a, b) => a.date3 - b.date3,
-          sortOrder: sortedInfo.columnKey === 'date3' && sortedInfo.order,
-        },
-        {
-          title: '1/29',
-          dataIndex: 'date4',
-          key: 'date4',
-          width: 100,
-          sorter: (a, b) => a.date4 - b.date4,
-          sortOrder: sortedInfo.columnKey === 'date4' && sortedInfo.order,
-        },
-        {
-          title: '個人總計',
-          dataIndex: 'total',
-          key: 'total',
-          width: 100,
-          sorter: (a, b) => a.total - b.total,
-          sortOrder: sortedInfo.columnKey === 'total' && sortedInfo.order,
-        },
-      ];
-      return columns;
-    },
+    //   // console.log("110", this.result);
+    //   const columns = [
+    //     {
+    //       title: '家號',
+    //       dataIndex: 'home_number',
+    //       key: 'home_number',
+    //       width: 100,
+    //       sorter: (a, b) => this.home_numberSort(a, b),
+    //       sortOrder: sortedInfo.columnKey === 'home_number' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '姓名',
+    //       dataIndex: 'name',
+    //       key: 'name',
+    //       width: 120,
+    //       sorter: (a, b) => a.name.length - b.name.length,
+    //       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '1/1',
+    //       dataIndex: 'date1',
+    //       key: 'date1',
+    //       width: 100,
+    //       sorter: (a, b) => a.date1 - b.date1,
+    //       sortOrder: sortedInfo.columnKey === 'date1' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '1/8',
+    //       dataIndex: 'date2',
+    //       key: 'date2',
+    //       width: 100,
+    //       sorter: (a, b) => a.date2 - b.date2,
+    //       sortOrder: sortedInfo.columnKey === 'date2' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '1/22',
+    //       dataIndex: 'date3',
+    //       key: 'date3',
+    //       width: 100,
+    //       sorter: (a, b) => a.date3 - b.date3,
+    //       sortOrder: sortedInfo.columnKey === 'date3' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '1/29',
+    //       dataIndex: 'date4',
+    //       key: 'date4',
+    //       width: 100,
+    //       sorter: (a, b) => a.date4 - b.date4,
+    //       sortOrder: sortedInfo.columnKey === 'date4' && sortedInfo.order,
+    //     },
+    //     {
+    //       title: '個人總計',
+    //       dataIndex: 'total',
+    //       key: 'total',
+    //       width: 100,
+    //       sorter: (a, b) => a.total - b.total,
+    //       sortOrder: sortedInfo.columnKey === 'total' && sortedInfo.order,
+    //     },
+    //   ];
+    //   return columns;
+    // },
   },
   mounted() {
     // 判斷有無token 否則要打回登入頁面
@@ -262,10 +264,14 @@ export default {
       const numA = this.extractNumber(a.home_number);
       const numB = this.extractNumber(b.home_number);
 
-      if (typeof a.homeNumber === 'string' && typeof b.homeNumber === 'string') {
+      if (typeof a.home_number === 'string' && typeof b.home_number === 'string') {
         // 如果沒有數字就比對字串長度
         if (numA === null && numB === null) {
-          return a.homeNumber.length - b.homeNumber.length;
+          if (a.home_number.length === b.home_number.length) {
+            return a.home_number.localeCompare(b.home_number);
+          } else {
+            return a.home_number.length - b.home_number.length;
+          }
         }
       }
 
@@ -288,115 +294,258 @@ export default {
     forwardup() {
       this.$router.push("DedicationPage");
     },
+    // (舊)撈所有資料
+    // allRegularDonations() {
+    //   this.loading = true
+    //   this.getAllRegularDonations({
+    //     date: localStorage.getItem('date')
+    //   }).then(res => {
+    //     this.loading = false
+    //     // console.log("195",res.data);
+    //     let data = res.data
+
+    //     for (let i = 0; i < data.length; i++) {
+    //       if (data[i].length === 8) {
+    //         this.result.push({
+    //           home_number: data[i][0],
+    //           name: data[i][1],
+    //           date1: data[i][2],
+    //           date2: data[i][3],
+    //           date3: data[i][4],
+    //           date4: data[i][5],
+    //           date5: data[i][6],
+    //           total: data[i][7]
+    //         });
+    //       } else {
+    //         this.result.push({
+    //           home_number: data[i][0],
+    //           name: data[i][1],
+    //           date1: data[i][2],
+    //           date2: data[i][3],
+    //           date3: data[i][4],
+    //           date4: data[i][5],
+    //           total: data[i][6]
+    //         });
+    //       }
+    //     }
+
+    //     this.columns[2].title = this.result[0].date1
+    //     this.columns[3].title = this.result[0].date2
+    //     this.columns[4].title = this.result[0].date3
+    //     this.columns[5].title = this.result[0].date4
+    //     if (this.result[0].date5 !== undefined) {
+    //       let { sortedInfo, filteredInfo } = this;
+    //       sortedInfo = sortedInfo || {};
+          
+    //       let columns6 = {
+    //         title: this.result[0].date5,
+    //         dataIndex: 'date5',
+    //         key: 'date5',
+    //         width: 100,
+    //         sorter: (a, b) => a.date5 - b.date5,
+    //         sortOrder: sortedInfo.columnKey === 'date5' && sortedInfo.order,
+    //       }
+    //       // console.log("240",columns6);
+    //       this.columns.splice(5 ,0 , columns6);
+    //     } 
+
+    //     // 扣3是扣掉最後三筆資料是有名氏統計、隱名氏統計以及總合計
+    //     for (let i = 1; i < this.result.length - 3; i++) {
+    //       if (this.result[0].date5 !== undefined) {
+    //         this.data.push({
+    //           key: i.toString(),
+    //           home_number: this.result[i].home_number,
+    //           name: this.result[i].name,
+    //           date1: this.result[i].date1 !== null ?  this.result[i].date1.toLocaleString() : 0,
+    //           date2: this.result[i].date2 !== null ?  this.result[i].date2.toLocaleString() : 0,
+    //           date3: this.result[i].date3 !== null ?  this.result[i].date3.toLocaleString() : 0,
+    //           date4: this.result[i].date4 !== null ?  this.result[i].date4.toLocaleString() : 0,
+    //           date5: this.result[i].date5 !== null ?  this.result[i].date5.toLocaleString() : 0,
+    //           total: this.result[i].total.toLocaleString()
+    //         })
+    //       } else {
+    //         this.data.push({
+    //           key: i.toString(),
+    //           home_number: this.result[i].home_number,
+    //           name: this.result[i].name,
+    //           date1: this.result[i].date1 !== null ?  this.result[i].date1.toLocaleString() : 0,
+    //           date2: this.result[i].date2 !== null ?  this.result[i].date2.toLocaleString() : 0,
+    //           date3: this.result[i].date3 !== null ?  this.result[i].date3.toLocaleString() : 0,
+    //           date4: this.result[i].date4 !== null ?  this.result[i].date4.toLocaleString() : 0,
+    //           total: this.result[i].total.toLocaleString()
+    //         })
+    //       }
+    //     }
+    //     this.totalPrice = this.result[this.result.length - 1].total
+    //     this.anonymousPrice = this.result[this.result.length - 2].total
+    //     this.famousPrice = this.result[this.result.length - 3].total
+    //     // 每週總金額
+    //     if (this.result[0].date5 !== undefined) {
+    //       this.date1_price = this.result[this.result.length - 3].date1 !== null ? this.result[this.result.length - 3].date1 : 0
+    //       this.date2_price = this.result[this.result.length - 3].date2 !== null ? this.result[this.result.length - 3].date2 : 0
+    //       this.date3_price = this.result[this.result.length - 3].date3 !== null ? this.result[this.result.length - 3].date3 : 0
+    //       this.date4_price = this.result[this.result.length - 3].date4 !== null ? this.result[this.result.length - 3].date4 : 0
+    //       this.date5_price = this.result[this.result.length - 3].date5 !== null ? this.result[this.result.length - 3].date5 : 0
+    //     } else {
+    //       this.date1_price = this.result[this.result.length - 3].date1 !== null ? this.result[this.result.length - 3].date1 : 0
+    //       this.date2_price = this.result[this.result.length - 3].date2 !== null ? this.result[this.result.length - 3].date2 : 0
+    //       this.date3_price = this.result[this.result.length - 3].date3 !== null ? this.result[this.result.length - 3].date3 : 0
+    //       this.date4_price = this.result[this.result.length - 3].date4 !== null ? this.result[this.result.length - 3].date4 : 0
+    //     }
+    //     // console.log("274",this.data);
+         
+        
+    //   }).catch(error => {
+    //       this.loading = false
+    //       Modal.error({
+    //         title: '系統提示',
+    //         content: '請重新查詢資料',
+    //         okText: '確認',
+    //       });
+    //     })
+    // },
     // 撈所有資料
     allRegularDonations() {
-      this.loading = true
+      if (this.data.length == 0) {
+        this.loading = true
+      }
       this.getAllRegularDonations({
         date: localStorage.getItem('date')
       }).then(res => {
         this.loading = false
         // console.log("195",res.data);
         let data = res.data
+        let origin_data = res.data
 
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].length === 8) {
-            this.result.push({
-              home_number: data[i][0],
-              name: data[i][1],
-              date1: data[i][2],
-              date2: data[i][3],
-              date3: data[i][4],
-              date4: data[i][5],
-              date5: data[i][6],
-              total: data[i][7]
-            });
-          } else {
-            this.result.push({
-              home_number: data[i][0],
-              name: data[i][1],
-              date1: data[i][2],
-              date2: data[i][3],
-              date3: data[i][4],
-              date4: data[i][5],
-              total: data[i][6]
-            });
+        // 整理表格表頭
+        // const headerRow = data[0];
+        // this.columns = headerRow.map((header) => ({
+        //   title: header,
+        //   dataIndex: header,
+        //   key: header,
+        //   width: 100,
+        //   sorter: (a, b) => this.customSort(a[header], b[header]), // 自定義排序函數
+        // }));
+        
+        const headerRow = data[0];
+        this.columns = headerRow.map((header) => {
+          let order = null;
+          if (this.sortedInfo && this.sortedInfo.columnKey === header) {
+            order = this.sortedInfo.order;
           }
-        }
 
-        this.columns[2].title = this.result[0].date1
-        this.columns[3].title = this.result[0].date2
-        this.columns[4].title = this.result[0].date3
-        this.columns[5].title = this.result[0].date4
-        if (this.result[0].date5 !== undefined) {
-          let { sortedInfo, filteredInfo } = this;
-          sortedInfo = sortedInfo || {};
-          
-          let columns6 = {
-            title: this.result[0].date5,
-            dataIndex: 'date5',
-            key: 'date5',
+          return {
+            title: header,
+            dataIndex: header,
+            key: header,
             width: 100,
-            sorter: (a, b) => a.date5 - b.date5,
-            sortOrder: sortedInfo.columnKey === 'date5' && sortedInfo.order,
-          }
-          // console.log("240",columns6);
-          this.columns.splice(5 ,0 , columns6);
-        } 
+            sorter: (a, b) => this.customSort(a[header], b[header]),
+            sortOrder: order,
+          };
+        });
 
-        // 扣3是扣掉最後三筆資料是有名氏統計、隱名氏統計以及總合計
-        for (let i = 1; i < this.result.length - 3; i++) {
-          if (this.result[0].date5 !== undefined) {
-            this.data.push({
-              key: i.toString(),
-              home_number: this.result[i].home_number,
-              name: this.result[i].name,
-              date1: this.result[i].date1 !== null ?  this.result[i].date1 : 0,
-              date2: this.result[i].date2 !== null ?  this.result[i].date2 : 0,
-              date3: this.result[i].date3 !== null ?  this.result[i].date3 : 0,
-              date4: this.result[i].date4 !== null ?  this.result[i].date4 : 0,
-              date5: this.result[i].date5 !== null ?  this.result[i].date5 : 0,
-              total: this.result[i].total
-            })
-          } else {
-            this.data.push({
-              key: i.toString(),
-              home_number: this.result[i].home_number,
-              name: this.result[i].name,
-              date1: this.result[i].date1 !== null ?  this.result[i].date1 : 0,
-              date2: this.result[i].date2 !== null ?  this.result[i].date2 : 0,
-              date3: this.result[i].date3 !== null ?  this.result[i].date3 : 0,
-              date4: this.result[i].date4 !== null ?  this.result[i].date4 : 0,
-              total: this.result[i].total
-            })
+        // console.log("199", this.columns);
+
+        // 放每一筆data
+        for (let i = 1; i < data.length; i++) {
+          const rowData = data[i];
+          const rowObject = {};
+          for (let j = 0; j < rowData.length; j++) {
+            const header = headerRow[j];
+            // 將非姓名和家號的值為 null 的欄位補上 0
+            if (header !== "家號" && header !== "姓名") {
+              rowObject[header] = rowData[j] === null ? 0 : rowData[j].toLocaleString(); 
+            } else {
+              rowObject[header] = rowData[j];
+            }
+          }
+          data[i] = rowObject;
+        }
+
+        // console.log("227", data);
+        // 第一個是表頭，所以直接從1開始，且捨去最後三筆總額的
+        if (this.data.length == 0) {
+          for (let i = 1; i < data.length - 3; i++) {
+            const rowData = data[i];
+            // console.log("209",rowData);
+            this.data.push(rowData)
           }
         }
-        this.totalPrice = this.result[this.result.length - 1].total
-        this.anonymousPrice = this.result[this.result.length - 2].total
-        this.famousPrice = this.result[this.result.length - 3].total
-        // 每週總金額
-        if (this.result[0].date5 !== undefined) {
-          this.date1_price = this.result[this.result.length - 3].date1 !== null ? this.date1_price = this.result[this.result.length - 3].date1 : 0
-          this.date2_price = this.result[this.result.length - 3].date2 !== null ? this.date2_price = this.result[this.result.length - 3].date2 : 0
-          this.date3_price = this.result[this.result.length - 3].date3 !== null ? this.date3_price = this.result[this.result.length - 3].date3 : 0
-          this.date4_price = this.result[this.result.length - 3].date4 !== null ? this.date4_price = this.result[this.result.length - 3].date4 : 0
-          this.date5_price = this.result[this.result.length - 3].date5 !== null ? this.date5_price = this.result[this.result.length - 3].date5 : 0
-        } else {
-          this.date1_price = this.result[this.result.length - 3].date1 !== null ? this.date1_price = this.result[this.result.length - 3].date1 : 0
-          this.date2_price = this.result[this.result.length - 3].date2 !== null ? this.date2_price = this.result[this.result.length - 3].date2 : 0
-          this.date3_price = this.result[this.result.length - 3].date3 !== null ? this.date3_price = this.result[this.result.length - 3].date3 : 0
-          this.date4_price = this.result[this.result.length - 3].date4 !== null ? this.date4_price = this.result[this.result.length - 3].date4 : 0
+
+        // console.log("475",this.data);
+
+        // 總計金額顯示用
+        let totalPrcieArr = data[data.length - 1]
+        // 去掉前兩個跟最後一個（家號、姓名、總計）
+        for (let j = 2; j < headerRow.length -1 ; j++) {
+          if (Object.keys(totalPrcieArr).length == 8) {
+            this.result.date1 = headerRow[2]
+            this.result.date2 = headerRow[3]
+            this.result.date3 = headerRow[4]
+            this.result.date4 = headerRow[5]
+            this.result.date5 = headerRow[6]
+
+            this.date1_price = totalPrcieArr[headerRow[2]] !== null ? totalPrcieArr[headerRow[2]] : 0
+            this.date2_price = totalPrcieArr[headerRow[3]] !== null ? totalPrcieArr[headerRow[3]] : 0
+            this.date3_price = totalPrcieArr[headerRow[4]] !== null ? totalPrcieArr[headerRow[4]] : 0
+            this.date4_price = totalPrcieArr[headerRow[5]] !== null ? totalPrcieArr[headerRow[5]] : 0
+            this.date5_price = totalPrcieArr[headerRow[6]] !== null ? totalPrcieArr[headerRow[6]] : 0
+          } else {
+            this.result.date1 = headerRow[2]
+            this.result.date2 = headerRow[3]
+            this.result.date3 = headerRow[4]
+            this.result.date4 = headerRow[5]
+
+            this.date1_price = totalPrcieArr[headerRow[2]] !== null ? totalPrcieArr[headerRow[2]] : 0
+            this.date2_price = totalPrcieArr[headerRow[3]] !== null ? totalPrcieArr[headerRow[3]] : 0
+            this.date3_price = totalPrcieArr[headerRow[4]] !== null ? totalPrcieArr[headerRow[4]] : 0
+            this.date4_price = totalPrcieArr[headerRow[5]] !== null ? totalPrcieArr[headerRow[5]] : 0
+          }
         }
-        // console.log("274",this.data);
-         
+
+        this.totalPrice = data[data.length - 1][headerRow[headerRow.length - 1]]
+        this.anonymousPrice = data[data.length - 2][headerRow[headerRow.length - 1]]
+        this.famousPrice = data[data.length - 3][headerRow[headerRow.length - 1]]
+
         
       }).catch(error => {
-          this.loading = false
-          Modal.error({
-            title: '系統提示',
-            content: '請重新查詢資料',
-            okText: '確認',
-          });
-        })
+        this.loading = false
+        Modal.error({
+          title: '系統提示',
+          content: '請重新查詢資料',
+          okText: '確認',
+        });
+      })
+    },
+    customSort(a, b) {
+      const removeCommas = (str) => {
+        if (typeof str !== 'string') return str;
+        return str.replace(/,/g, '');
+      };
+
+      const aValue = a !== null ? removeCommas(a.toString()) : "";
+      const bValue = b !== null ? removeCommas(b.toString()) : "";
+
+      // 如果值都是純數字，則比較數字大小
+      if (!isNaN(aValue) && !isNaN(bValue)) {
+        return Number(aValue) - Number(bValue);
+      }
+
+      // 提取數字部分進行比較
+      const aNumeric = Number(aValue.match(/\d+/) ? aValue.match(/\d+/)[0] : 0);
+      const bNumeric = Number(bValue.match(/\d+/) ? bValue.match(/\d+/)[0] : 0);
+
+      if (aNumeric !== 0 || bNumeric !== 0) {
+        return aNumeric - bNumeric;
+      }
+
+      // 若數字相同或無數字，則按照字串長度進行比較
+      if (aValue.length !== bValue.length) {
+        return aValue.length - bValue.length;
+      }
+
+      // 如果長度相同，則按照 A-Z 排序
+      return aValue.localeCompare(bValue);
     },
     // 匯出
     exportProfileData() {
@@ -436,14 +585,13 @@ export default {
     },
     // 表格相關的
     handleChange(pagination, filters, sorter) {
-      // console.log('Various parameters', pagination, filters, sorter);
-      this.filteredInfo = filters;
       this.sortedInfo = sorter;
-
       if (!sorter.order) {
-        sorter.order = 'ascend';
+        sorter.order = 'ascend'; // 如果您不希望有第三個狀態，您可以在此處進行調整
       }
-      this.lastSortOrder = sorter.order;
+
+      // 這裡可能需要重新調用 allRegularDonations (或其他相關方法) 以更新排序狀態
+      this.allRegularDonations();
     },
     // 確認完總金額
     checkPrice() {

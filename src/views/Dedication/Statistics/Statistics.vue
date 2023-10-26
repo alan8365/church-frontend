@@ -172,7 +172,11 @@ export default {
           dataIndex: 'January',
           key: 'January',
           width: 100,
-          sorter: (a, b) => a.January - b.January,
+          sorter: (a, b) => {
+            const valueA = (typeof a.January === 'string') ? parseInt(a.January.replace(/,/g, '')) : a.January;
+            const valueB = (typeof b.January === 'string') ? parseInt(b.January.replace(/,/g, '')) : b.January;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'January' && sortedInfo.order,
         },
         {
@@ -180,7 +184,11 @@ export default {
           dataIndex: 'February',
           key: 'February',
           width: 100,
-          sorter: (a, b) => a.February - b.February,
+          sorter: (a, b) => {
+            const valueA = (typeof a.February === 'string') ? parseInt(a.February.replace(/,/g, '')) : a.February;
+            const valueB = (typeof b.February === 'string') ? parseInt(b.February.replace(/,/g, '')) : b.February;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'February' && sortedInfo.order,
         },
         {
@@ -188,7 +196,11 @@ export default {
           dataIndex: 'March',
           key: 'March',
           width: 100,
-          sorter: (a, b) => a.March - b.March,
+          sorter: (a, b) => {
+            const valueA = (typeof a.March === 'string') ? parseInt(a.March.replace(/,/g, '')) : a.March;
+            const valueB = (typeof b.March === 'string') ? parseInt(b.March.replace(/,/g, '')) : b.March;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'March' && sortedInfo.order,
         },
         {
@@ -196,7 +208,11 @@ export default {
           dataIndex: 'April',
           key: 'April',
           width: 100,
-          sorter: (a, b) => a.April - b.April,
+          sorter: (a, b) => {
+            const valueA = (typeof a.April === 'string') ? parseInt(a.April.replace(/,/g, '')) : a.April;
+            const valueB = (typeof b.April === 'string') ? parseInt(b.April.replace(/,/g, '')) : b.April;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'April' && sortedInfo.order,
         },
         {
@@ -204,7 +220,11 @@ export default {
           dataIndex: 'May',
           key: 'May',
           width: 100,
-          sorter: (a, b) => a.May - b.May,
+          sorter: (a, b) => {
+            const valueA = (typeof a.May === 'string') ? parseInt(a.May.replace(/,/g, '')) : a.May;
+            const valueB = (typeof b.May === 'string') ? parseInt(b.May.replace(/,/g, '')) : b.May;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'May' && sortedInfo.order,
         },
         {
@@ -212,7 +232,11 @@ export default {
           dataIndex: 'June',
           key: 'June',
           width: 100,
-          sorter: (a, b) => a.June - b.June,
+          sorter: (a, b) => {
+            const valueA = (typeof a.June === 'string') ? parseInt(a.June.replace(/,/g, '')) : a.June;
+            const valueB = (typeof b.June === 'string') ? parseInt(b.June.replace(/,/g, '')) : b.June;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'June' && sortedInfo.order,
         },
         {
@@ -220,7 +244,11 @@ export default {
           dataIndex: 'July',
           key: 'July',
           width: 100,
-          sorter: (a, b) => a.July - b.July,
+          sorter: (a, b) => {
+            const valueA = (typeof a.July === 'string') ? parseInt(a.July.replace(/,/g, '')) : a.July;
+            const valueB = (typeof b.July === 'string') ? parseInt(b.July.replace(/,/g, '')) : b.July;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'July' && sortedInfo.order,
         },
         {
@@ -228,7 +256,11 @@ export default {
           dataIndex: 'August',
           key: 'August',
           width: 100,
-          sorter: (a, b) => a.August - b.August,
+          sorter: (a, b) => {
+            const valueA = (typeof a.August === 'string') ? parseInt(a.August.replace(/,/g, '')) : a.August;
+            const valueB = (typeof b.August === 'string') ? parseInt(b.August.replace(/,/g, '')) : b.August;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'August' && sortedInfo.order,
         },
         {
@@ -236,7 +268,11 @@ export default {
           dataIndex: 'September',
           key: 'September',
           width: 100,
-          sorter: (a, b) => a.September - b.September,
+          sorter: (a, b) => {
+            const valueA = (typeof a.September === 'string') ? parseInt(a.September.replace(/,/g, '')) : a.September;
+            const valueB = (typeof b.September === 'string') ? parseInt(b.September.replace(/,/g, '')) : b.September;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'September' && sortedInfo.order,
         },
         {
@@ -244,7 +280,11 @@ export default {
           dataIndex: 'October',
           key: 'October',
           width: 100,
-          sorter: (a, b) => a.October - b.October,
+          sorter: (a, b) => {
+            const valueA = (typeof a.October === 'string') ? parseInt(a.October.replace(/,/g, '')) : a.October;
+            const valueB = (typeof b.October === 'string') ? parseInt(b.October.replace(/,/g, '')) : b.October;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'October' && sortedInfo.order,
         },
         {
@@ -252,7 +292,11 @@ export default {
           dataIndex: 'November',
           key: 'November',
           width: 100,
-          sorter: (a, b) => a.November - b.November,
+          sorter: (a, b) => {
+            const valueA = (typeof a.November === 'string') ? parseInt(a.November.replace(/,/g, '')) : a.November;
+            const valueB = (typeof b.November === 'string') ? parseInt(b.November.replace(/,/g, '')) : b.November;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'November' && sortedInfo.order,
         },
         {
@@ -260,7 +304,11 @@ export default {
           dataIndex: 'December',
           key: 'December',
           width: 100,
-          sorter: (a, b) => a.December - b.December,
+          sorter: (a, b) => {
+            const valueA = (typeof a.December === 'string') ? parseInt(a.December.replace(/,/g, '')) : a.December;
+            const valueB = (typeof b.December === 'string') ? parseInt(b.December.replace(/,/g, '')) : b.December;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'December' && sortedInfo.order,
         },
         {
@@ -268,7 +316,11 @@ export default {
           dataIndex: 'total',
           key: 'total',
           width: 100,
-          sorter: (a, b) => a.total - b.total,
+          sorter: (a, b) => {
+            const valueA = (typeof a.total === 'string') ? parseInt(a.total.replace(/,/g, '')) : a.total;
+            const valueB = (typeof b.total === 'string') ? parseInt(b.total.replace(/,/g, '')) : b.total;
+            return valueA - valueB;
+          },
           sortOrder: sortedInfo.columnKey === 'total' && sortedInfo.order,
         },
       ];
@@ -301,10 +353,14 @@ export default {
       const numA = this.extractNumber(a.home_number);
       const numB = this.extractNumber(b.home_number);
 
-      if (typeof a.homeNumber === 'string' && typeof b.homeNumber === 'string') {
+      if (typeof a.home_number === 'string' && typeof b.home_number === 'string') {
         // 如果沒有數字就比對字串長度
         if (numA === null && numB === null) {
-          return a.homeNumber.length - b.homeNumber.length;
+          if (a.home_number.length === b.home_number.length) {
+            return a.home_number.localeCompare(b.home_number);
+          } else {
+            return a.home_number.length - b.home_number.length;
+          }
         }
       }
 
@@ -340,7 +396,7 @@ export default {
         for (let i = 0; i < data.length; i++) {
           this.result.push({
             home_number: data[i][0],
-            name: data[i][1],
+            name: data[i][1] !== null ? data[i][1] : "",
             January: data[i][2],
             February: data[i][3],
             March: data[i][4],
@@ -362,26 +418,26 @@ export default {
           this.data.push({
             key: i.toString(),
             home_number: this.result[i].home_number,
-            name: this.result[i].name,
-            January: this.result[i].January !== null ?  this.result[i].January : 0,
-            February: this.result[i].February !== null ?  this.result[i].February : 0,
-            March: this.result[i].March !== null ?  this.result[i].March : 0,
-            April: this.result[i].April !== null ?  this.result[i].April : 0,
-            May: this.result[i].May !== null ?  this.result[i].May : 0,
-            June: this.result[i].June !== null ?  this.result[i].June : 0,
-            July: this.result[i].July !== null ?  this.result[i].July : 0,
-            August: this.result[i].August !== null ?  this.result[i].August : 0,
-            September: this.result[i].September !== null ?  this.result[i].September : 0,
-            October: this.result[i].October !== null ?  this.result[i].October : 0,
-            November: this.result[i].November !== null ?  this.result[i].November : 0,
-            December: this.result[i].December !== null ?  this.result[i].December : 0,
-            total: this.result[i].total
+            name: data[i][1] !== null ? data[i][1] : "",
+            January: this.result[i].January !== null ?  this.result[i].January.toLocaleString() : 0,
+            February: this.result[i].February !== null ?  this.result[i].February.toLocaleString() : 0,
+            March: this.result[i].March !== null ?  this.result[i].March.toLocaleString() : 0,
+            April: this.result[i].April !== null ?  this.result[i].April.toLocaleString() : 0,
+            May: this.result[i].May !== null ?  this.result[i].May.toLocaleString() : 0,
+            June: this.result[i].June !== null ?  this.result[i].June.toLocaleString() : 0,
+            July: this.result[i].July !== null ?  this.result[i].July.toLocaleString() : 0,
+            August: this.result[i].August !== null ?  this.result[i].August.toLocaleString() : 0,
+            September: this.result[i].September !== null ?  this.result[i].September.toLocaleString() : 0,
+            October: this.result[i].October !== null ?  this.result[i].October.toLocaleString() : 0,
+            November: this.result[i].November !== null ?  this.result[i].November.toLocaleString() : 0,
+            December: this.result[i].December !== null ?  this.result[i].December.toLocaleString() : 0,
+            total: this.result[i].total.toLocaleString()
           })
         }
 
-        this.totalPrice = this.result[this.result.length - 1].total
-        this.anonymousPrice = this.result[this.result.length - 2].total
-        this.famousPrice = this.result[this.result.length - 3].total
+        this.totalPrice = this.result[this.result.length - 1].total.toLocaleString()
+        this.anonymousPrice = this.result[this.result.length - 2].total.toLocaleString()
+        this.famousPrice = this.result[this.result.length - 3].total.toLocaleString()
         
         // console.log("274",this.data);
          

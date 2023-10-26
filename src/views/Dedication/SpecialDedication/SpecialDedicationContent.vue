@@ -46,7 +46,7 @@
         </div>
         <!-- :row-selection="rowSelection" -->
         <div class="box_content">
-          <a-table :columns="columns" :data-source="data" @change="handleChange" :pagination="pagination" />
+          <a-table :columns="columns" :data-source="data" @change="handleChange" :pagination="pagination"/>
         </div>
        </a-col>
     </a-row>
@@ -145,21 +145,30 @@ export default {
             title: '姓名',
             dataIndex: 'name',
             key: 'name',
-            sorter: (a, b) => a.name.length - b.name.length,
+            sorter: (a, b) => {
+              if (a.name.length !== b.name.length) {
+                return a.name.length - b.name.length;
+              }
+              return a.name.localeCompare(b.name);
+            },
             sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
           },
           {
             title: '奉獻日期',
             dataIndex: 'donation_at',
             key: 'donation_at',
-            sorter: (a, b) => parseInt(a.donation_at.replace("-","")) - parseInt(b.donation_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.donation_at.replace(/-/g, '')) - parseInt(b.donation_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'donation_at' && sortedInfo.order,
           },
           {
             title: '金額',
             dataIndex: 'donation_amount',
             key: 'donation_amount',
-            sorter: (a, b) => a.donation_amount - b.donation_amount,
+            sorter: (a, b) => {
+              const valueA = (typeof a.donation_amount === 'string') ? parseInt(a.donation_amount.replace(/,/g, '')) : a.donation_amount;
+              const valueB = (typeof b.donation_amount === 'string') ? parseInt(b.donation_amount.replace(/,/g, '')) : b.donation_amount;
+              return valueA - valueB;
+            },
             sortOrder: sortedInfo.columnKey === 'donation_amount' && sortedInfo.order,
           },
           // {
@@ -196,21 +205,30 @@ export default {
             title: '姓名',
             dataIndex: 'name',
             key: 'name',
-            sorter: (a, b) => a.name.length - b.name.length,
+            sorter: (a, b) => {
+              if (a.name.length !== b.name.length) {
+                return a.name.length - b.name.length;
+              }
+              return a.name.localeCompare(b.name);
+            },
             sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
           },
           {
             title: '奉獻日期',
             dataIndex: 'donation_at',
             key: 'donation_at',
-            sorter: (a, b) => parseInt(a.donation_at.replace("-","")) - parseInt(b.donation_at.replace("-","")),
+            sorter: (a, b) => parseInt(a.donation_at.replace(/-/g, '')) - parseInt(b.donation_at.replace(/-/g, '')),
             sortOrder: sortedInfo.columnKey === 'donation_at' && sortedInfo.order,
           },
           {
             title: '金額',
             dataIndex: 'donation_amount',
             key: 'donation_amount',
-            sorter: (a, b) => a.donation_amount - b.donation_amount,
+            sorter: (a, b) => {
+              const valueA = (typeof a.donation_amount === 'string') ? parseInt(a.donation_amount.replace(/,/g, '')) : a.donation_amount;
+              const valueB = (typeof b.donation_amount === 'string') ? parseInt(b.donation_amount.replace(/,/g, '')) : b.donation_amount;
+              return valueA - valueB;
+            },
             sortOrder: sortedInfo.columnKey === 'donation_amount' && sortedInfo.order,
           },
           // {
@@ -267,10 +285,14 @@ export default {
       const numA = this.extractNumber(a.home_number);
       const numB = this.extractNumber(b.home_number);
 
-      if (typeof a.homeNumber === 'string' && typeof b.homeNumber === 'string') {
+      if (typeof a.home_number === 'string' && typeof b.home_number === 'string') {
         // 如果沒有數字就比對字串長度
         if (numA === null && numB === null) {
-          return a.homeNumber.length - b.homeNumber.length;
+          if (a.home_number.length === b.home_number.length) {
+            return a.home_number.localeCompare(b.home_number);
+          } else {
+            return a.home_number.length - b.home_number.length;
+          }
         }
       }
 
@@ -353,12 +375,12 @@ export default {
                 //       ? res.data[i].household.head_of_household.name
                 //       : res.data[i].household.comment,
                 donation_at: res.data[i].donation_at,
-                donation_amount: res.data[i].donation_amount,
+                donation_amount: res.data[i].donation_amount.toLocaleString(),
                 comment: res.data[i].comment !== null ? res.data[i].comment : "" ,
               })
             } 
-            let donation_amount = this.data.map(x => x.donation_amount)
-            this.totalPrice = donation_amount.reduce((a,b) => a + b)
+            let donation_amount = this.data.map(x => parseInt(x.donation_amount.replace(/,/g, '')))
+            this.totalPrice = donation_amount.reduce((a,b) => a + b).toLocaleString()
             this.data = this.data.reverse()
           }
         })
@@ -414,12 +436,12 @@ export default {
                 //       ? res.data[i].household.head_of_household.name
                 //       : res.data[i].household.comment,
                 donation_at: res.data[i].donation_at,
-                donation_amount: res.data[i].donation_amount,
+                donation_amount: res.data[i].donation_amount.toLocaleString(),
                 comment: res.data[i].comment !== null ? res.data[i].comment : "" ,
               })
             } 
-            let donation_amount = this.data.map(x => x.donation_amount)
-            this.totalPrice = donation_amount.reduce((a,b) => a + b)
+            let donation_amount = this.data.map(x => parseInt(x.donation_amount.replace(/,/g, '')))
+            this.totalPrice = donation_amount.reduce((a,b) => a + b).toLocaleString()
             this.data = this.data.reverse()
           }
         }).catch(error => {
