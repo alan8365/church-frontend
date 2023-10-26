@@ -6,9 +6,9 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new webpack.DefinePlugin({
-        'process.env': {
-          API_URL: JSON.stringify('http://163.17.135.152:7465/api')
-        }
+        // 'process.env': {
+        //   API_URL: JSON.stringify('http://163.17.135.152:7465/api')
+        // }
       })
     ]
   },
