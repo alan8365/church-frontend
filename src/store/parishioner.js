@@ -9,12 +9,12 @@ const CryptoJS = require("crypto-js");
 const token = localStorage.getItem("token");
 
 // const api = "http://163.17.135.152:7465/api";
-const api = process.env.API_URL;
+const api = process.env.VUE_APP_API_URL;
 
 // 有Token
 const userTokenAxios = axios.create({
   // baseURL: "http://163.17.135.152:7465/api",
-  baseURL: process.env.API_URL,
+  baseURL: process.env.VUE_APP_API_URL,
   headers: {
     "Cache-Control": "no-cache",
     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const userTokenAxios = axios.create({
 // 有Token且FormData
 const userFormDataAxios = axios.create({
   // baseURL: "http://163.17.135.152:7465/api",
-  baseURL: process.env.API_URL,
+  baseURL: process.env.VUE_APP_API_URL,
   headers: {
     // "Cache-Control": "no-cache",
     'Content-Type' : 'multipart/form-data',

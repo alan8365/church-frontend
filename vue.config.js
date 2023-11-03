@@ -1,17 +1,17 @@
 const path = require('path');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 
 module.exports = {
   publicPath: "",
-  configureWebpack: {
-    plugins: [
-      new webpack.DefinePlugin({
-        // 'process.env': {
-        //   API_URL: JSON.stringify('http://163.17.135.152:7465/api')
-        // }
-      })
-    ]
-  },
+  // configureWebpack: {
+  //   plugins: [
+  //     // new webpack.DefinePlugin({
+  //     //   'process.env': {
+  //     //     API_URL: JSON.stringify('http://163.17.135.152:7465/api')
+  //     //   }
+  //     // })
+  //   ]
+  // },
   // 本地跨域設定，VM不需使用
   devServer: {
     proxy: {

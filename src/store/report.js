@@ -9,12 +9,12 @@ const CryptoJS = require("crypto-js");
 // const token = localStorage.getItem("token");
 
 // const api = "http://163.17.135.152:7465/api";
-const api = process.env.API_URL;
+const api = process.env.VUE_APP_API_URL;
 
 // 有Token
 const userTokenAxios = axios.create({
   // baseURL: "http://163.17.135.152:7465/api",
-  baseURL: process.env.API_URL,
+  baseURL: process.env.VUE_APP_API_URL,
   headers: {
     "Cache-Control": "no-cache",
     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const userTokenAxios = axios.create({
 // 下載excel
 const downloadAxios = axios.create({
   // baseURL: "http://163.17.135.152:7465/api",
-  baseURL: process.env.API_URL,
+  baseURL: process.env.VUE_APP_API_URL,
   headers: {
   //   "Cache-Control": "no-cache",
     "Content-Type": "application/json",
@@ -146,6 +146,13 @@ const actions = {
   // 匯出特殊奉獻資料
   reportSpecialDonations({ commit }, contents) {
     const apiUrl = `${api}/report/special_donations/event?event_id=${contents.event_id}`;
+    return downloadAxios.get(apiUrl).then((res) => {
+      return res;
+    });
+  },
+  // 匯出特殊奉獻資料（公告用）
+  reportSpecialDonationsAnnounce({ commit }, contents) {
+    const apiUrl = `${api}/report/special_donations/event?event_id=${contents.event_id}&announce=true`;
     return downloadAxios.get(apiUrl).then((res) => {
       return res;
     });

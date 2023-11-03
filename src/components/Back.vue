@@ -5,10 +5,22 @@
 </template>
 
 <script>
+import { Modal } from "ant-design-vue";
+
 export default {
   methods: {
     back() {
-      this.$emit("back");
+      let vs = this
+       Modal.confirm({
+          title: '系統提示',
+          content: `請確認是否要返回上一頁`,
+          okText: '確認',
+          cancelText: '取消',
+          onOk() {
+            vs.$emit("back");
+        },
+      });
+      
     },
   },
 };
