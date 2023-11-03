@@ -343,7 +343,9 @@ export default {
       scroll_X: document.body.clientWidth,
 
       // 最後更新時間
-      updated_at: ""
+      updated_at: "",
+      // 初始家號
+      original_home_number: "",
     };
   },
   components: {
@@ -536,6 +538,8 @@ export default {
 
         this.name = JSON.parse(localStorage.getItem("editData")).last_name + JSON.parse(localStorage.getItem("editData")).first_name
         this.home_number = JSON.parse(localStorage.getItem("editData")).home_number
+        this.original_home_number = JSON.parse(localStorage.getItem("editData")).home_number
+
         this.gender = JSON.parse(localStorage.getItem("editData")).gender
         this.birth_at = JSON.parse(localStorage.getItem("editData")).birth_at
         // this.father = JSON.parse(localStorage.getItem("editData")).father
@@ -717,51 +721,128 @@ export default {
             okText: '確認',
           })
         } else {
-          this.loading = true
+          let vs = this
           // 判斷是否為戶長，是戶長還要更新該家號的戶長
           if (this.household == true) {
-            this.getSaveParishionersData({
-              _id: this.userNum,
-              home_number: this.home_number,
-              name: this.name,
-              gender: this.gender,
-              birth_at: this.birth_at,
-              postal_code: this.postal_code,
-              address: this.address,
-              picture: this.userImg,
-              father: this.father,
-              mother: this.mother,
-              father_id: this.father_id,
-              mother_id: this.mother_id,
-              spouse: this.spouse,
-              home_phone: this.home_phone,
-              mobile_phone: this.mobile_phone,
-              nationality: this.nationality,
-              profession: this.profession,
-              company_name: this.company_name,
-              sibling_number: this.sibling_number,
-              children_number: this.children_number,
-              move_in_date: this.move_in_date,
-              original_parish: this.original_parish,
-              move_out_date: this.move_out_date,
-              move_out_reason: this.move_out_reason,
-              destination_parish: this.destination_parish,
-              comment: this.comment
-            }).then(res => {
-              this.getSaveHouseholdsData({
-                _home_number: this.home_number,
-                head_of_household_id: this.userNum
-              }).then(ress => {
-                this.loading = false
-                let vs = this
-                Modal.success({
-                  title: '系統提示',
-                  content: '編輯成功',
-                  okText: '確認',
-                  onOk() {
-                    vs.$router.push("/ProfileData");
-                  }
-                })
+            // 如果家號與原本的不同，跳出提示文字
+            if (this.home_number !== this.original_home_number) {
+              Modal.confirm({
+                title: '系統提示',
+                content: `請確認是否要將${this.name}教友改為${this.home_number}戶長，若為是，${this.original_home_number}則會失去戶長`,
+                okText: '確認',
+                cancelText: '取消',
+                onOk() {
+                  vs.loading = true
+                  vs.getSaveParishionersData({
+                    _id: vs.userNum,
+                    home_number: vs.home_number,
+                    name: vs.name,
+                    gender: vs.gender,
+                    birth_at: vs.birth_at,
+                    postal_code: vs.postal_code,
+                    address: vs.address,
+                    picture: vs.userImg,
+                    father: vs.father,
+                    mother: vs.mother,
+                    father_id: vs.father_id,
+                    mother_id: vs.mother_id,
+                    spouse: vs.spouse,
+                    home_phone: vs.home_phone,
+                    mobile_phone: vs.mobile_phone,
+                    nationality: vs.nationality,
+                    profession: vs.profession,
+                    company_name: vs.company_name,
+                    sibling_number: vs.sibling_number,
+                    children_number: vs.children_number,
+                    move_in_date: vs.move_in_date,
+                    original_parish: vs.original_parish,
+                    move_out_date: vs.move_out_date,
+                    move_out_reason: vs.move_out_reason,
+                    destination_parish: vs.destination_parish,
+                    comment: vs.comment
+                  }).then(res => {
+                    vs.getSaveHouseholdsData({
+                      _home_number: vs.home_number,
+                      head_of_household_id: vs.userNum
+                    }).then(ress => {
+                      vs.loading = false
+                      Modal.success({
+                        title: '系統提示',
+                        content: '編輯成功',
+                        okText: '確認',
+                        onOk() {
+                          vs.$router.push("/ProfileData");
+                        }
+                      })
+                    }).catch(error => {
+                      vs.loading = false
+                      Modal.error({
+                        title: '系統提示',
+                        content: '編輯失敗，請重新檢查資料',
+                        okText: '確認'
+                      });
+                    });
+                  }).catch(error => {
+                    vs.loading = false
+                    Modal.error({
+                      title: '系統提示',
+                      content: '編輯失敗，請重新檢查資料',
+                      okText: '確認'
+                    });
+                  });
+                },
+              });
+            } else {
+              this.getSaveParishionersData({
+                _id: this.userNum,
+                home_number: this.home_number,
+                name: this.name,
+                gender: this.gender,
+                birth_at: this.birth_at,
+                postal_code: this.postal_code,
+                address: this.address,
+                picture: this.userImg,
+                father: this.father,
+                mother: this.mother,
+                father_id: this.father_id,
+                mother_id: this.mother_id,
+                spouse: this.spouse,
+                home_phone: this.home_phone,
+                mobile_phone: this.mobile_phone,
+                nationality: this.nationality,
+                profession: this.profession,
+                company_name: this.company_name,
+                sibling_number: this.sibling_number,
+                children_number: this.children_number,
+                move_in_date: this.move_in_date,
+                original_parish: this.original_parish,
+                move_out_date: this.move_out_date,
+                move_out_reason: this.move_out_reason,
+                destination_parish: this.destination_parish,
+                comment: this.comment
+              }).then(res => {
+                this.getSaveHouseholdsData({
+                  _home_number: this.home_number,
+                  head_of_household_id: this.userNum
+                }).then(ress => {
+                  this.loading = false
+                  let vs = this
+                  Modal.success({
+                    title: '系統提示',
+                    content: '編輯成功',
+                    okText: '確認',
+                    onOk() {
+                      vs.$router.push("/ProfileData");
+                    }
+                  })
+                }).catch(error => {
+                  this.loading = false
+                  Modal.error({
+                    title: '系統提示',
+                    content: '編輯失敗，請重新檢查資料',
+                    okText: '確認'
+                  });
+                });
               }).catch(error => {
                 this.loading = false
                 Modal.error({
@@ -770,15 +851,9 @@ export default {
                   okText: '確認'
                 });
               });
-            }).catch(error => {
-              this.loading = false
-              Modal.error({
-                title: '系統提示',
-                content: '編輯失敗，請重新檢查資料',
-                okText: '確認'
-              });
-            });
+            }
           } else {
+            this.loading = true
             this.getSaveParishionersData({
               _id: this.userNum,
               home_number: this.home_number,

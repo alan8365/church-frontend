@@ -28,7 +28,13 @@
                 <!-- <div class="bar">
                     <a>教友編號：</a>
                     <a-input class="inputBox" placeholder="請輸入教友編號" v-model="userNum" disabled/>
-                </div> -->
+                </div> -->      
+                <div class="bar">
+                    <a>領洗編號：</a>
+                    <div class="textbox">
+                      <a>{{ serial_number }}</a>
+                    </div>
+                </div>
                 <div class="bar">
                     <a>姓名：</a>
                     <div class="textbox">
@@ -570,6 +576,9 @@ export default {
       marriage_witness2: "",
       marriage_bridegroom: "",
       marriage_bride: "",
+
+      // 領洗編號
+      serial_number: ""
     };
   },
   components: {
@@ -740,6 +749,8 @@ export default {
         .catch(error => {
           this.getImageUrl = "https://i.imgur.com/qJc2R7e.png"
         });
+        // 領洗編號
+        this.serial_number = JSON.parse(localStorage.getItem("editData")).baptism !== undefined ? JSON.parse(localStorage.getItem("editData")).baptism.serial_number : ""
 
         // this.name = JSON.parse(localStorage.getItem("editData")).name
         this.name = JSON.parse(localStorage.getItem("editData")).last_name + JSON.parse(localStorage.getItem("editData")).first_name

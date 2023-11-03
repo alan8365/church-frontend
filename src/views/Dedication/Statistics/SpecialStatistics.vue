@@ -20,6 +20,13 @@
               總金額： <a style="color: red">{{ totalPrice }}</a> 元
             </div>
             <button
+              @click="exportProfileDataAnnounce"
+              class="crud_button"
+              style="width: 150px;"
+            >
+              匯出公告名冊
+            </button>
+            <button
               @click="exportProfileData"
               class="crud_button"
             >
@@ -187,6 +194,8 @@ export default {
       reportSpecialDonations: 'reportSpecialDonations',
       // 顯示特殊奉獻資料
       getAllRegularSpecialDonations: 'getAllRegularSpecialDonations',
+      // 匯出特殊奉獻資料（公告用）
+      reportSpecialDonationsAnnounce: 'reportSpecialDonationsAnnounce'
     }),
     // 自訂家號排序
     home_numberSort(a ,b) {
@@ -233,7 +242,8 @@ export default {
         // console.log("195",res.data);
         let data = res.data
 
-        for (let i = 0; i < data.length; i++) {
+        // 從1開始是因為第一欄多了一個標題
+        for (let i = 1; i < data.length; i++) {
           if (data[i][0] !== null) {
             this.result.push({
               home_number: data[i][0],
@@ -291,6 +301,42 @@ export default {
             setTimeout(() => {
                 vs.loading = false
                 vs.reportSpecialDonations({
+                  event_id: localStorage.getItem('event_id')
+                }).then(res => {
+                  // console.log("309",res);
+                  // 自動下載
+                  const url = window.URL.createObjectURL(new Blob([res.data]));
+                  const link = document.createElement('a');
+                  link.href = url;
+                   // 指定下載的檔案名稱
+                  link.setAttribute('download', `${localStorage.getItem('event_name') +'特殊奉獻統計資料.xlsx'}`);
+                  document.body.appendChild(link);
+                  link.click();
+                })
+                Modal.success({
+                    title: '系統提示',
+                    content: '匯出成功',
+                    okText: '確認',
+                    onOk() {
+                    }
+                });
+        }, 1000)
+          },
+        });
+    },
+    // 匯出公告用
+    exportProfileDataAnnounce() {
+        let vs = this
+        Modal.confirm({
+          title: '系統提示',
+          content: `請確認是否匯出「公告名冊」統計資料`,
+          okText: '確認',
+          cancelText: '取消',
+          onOk() {
+            vs.loading = true
+            setTimeout(() => {
+                vs.loading = false
+                vs.reportSpecialDonationsAnnounce({
                   event_id: localStorage.getItem('event_id')
                 }).then(res => {
                   // console.log("309",res);

@@ -11,6 +11,11 @@ COPY . .
 # install node modules and build assets
 RUN npm install && npm build
 
+ENV MODE production
+
+RUN npm install
+RUN npm run build -- --mode
+
 # nginx state for serving content
 FROM nginx:alpine
 # Set working directory to nginx asset directory
