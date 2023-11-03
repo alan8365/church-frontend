@@ -9,10 +9,10 @@ WORKDIR /app
 # Copy all files from current directory to working dir in image
 COPY . .
 # install node modules and build assets
-ENV MODE development
+ENV MODE production
 
 RUN npm install
-RUN npm run build --mode $MODE
+RUN npm run build -- --mode $MODE
 
 # nginx state for serving content
 FROM nginx:alpine
