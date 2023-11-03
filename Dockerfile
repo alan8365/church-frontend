@@ -14,11 +14,6 @@ ENV MODE production
 RUN npm install
 RUN npm run build -- --mode $MODE
 
-ENV MODE production
-
-RUN npm install
-RUN npm run build -- --mode
-
 # nginx state for serving content
 FROM nginx:alpine
 # Set working directory to nginx asset directory
